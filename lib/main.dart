@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = new QuizBrain();
 void main() {
@@ -34,6 +35,31 @@ class _QuizPageState extends State<QuizPage> {
   void checkAnswer(bool userPickedAns) {
     bool correctAnswer = quizBrain.getQuestionAnswer();
     setState(() {
+      if(quizBrain.isFinished() == true){
+        Alert(
+          context: context,
+          type: AlertType.info,
+          title: "Alert",
+          desc: "You have successfully completed the test!",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "COOL",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  quizBrain.reset();
+                  scoreKeeper = [];
+                });
+                },
+              width: 120,
+            )
+          ],
+        ).show();
+      }
+
       if (userPickedAns == correctAnswer) {
         scoreKeeper.add(
           Icon(
